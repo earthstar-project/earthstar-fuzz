@@ -5,6 +5,14 @@ import {
     encodeBufferToBase32
 } from 'earthstar';
 
+jest.setTimeout(12000)
+fc.configureGlobal({
+    verbose: true,
+    numRuns: 500,
+    interruptAfterTimeLimit: 11000,
+    markInterruptAsFailure: true,
+});
+
 test('base32 encoding/decoding starting from a buffer', () => {
     fc.assert(
         fc.property(
@@ -28,12 +36,9 @@ test('base32 encoding/decoding starting from a buffer', () => {
             }
         ), {
             // https://github.com/dubzzz/fast-check/blob/main/documentation/Runners.md
-            verbose: true,
-            numRuns: 200,
             examples: [
                 [new Uint8Array([0, 0, 0, 0, 0, 0, 0, 1])],
             ],
-            // endOnFailure: true,
         }
     );
 });
@@ -63,8 +68,6 @@ test('base32 encoding/decoding starting from a string', () => {
                 }
             }
         ), {
-            verbose: true,
-            numRuns: 500,
         }
     );
 });
