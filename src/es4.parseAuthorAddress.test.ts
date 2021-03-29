@@ -8,7 +8,7 @@ import {
 jest.setTimeout(12000)
 fc.configureGlobal({
     verbose: true,
-    numRuns: 100,
+    numRuns: 1000,
     interruptAfterTimeLimit: 11000,
     markInterruptAsFailure: true,
 });
@@ -24,12 +24,14 @@ let goodKeypair: AuthorKeypair = {
 test('parseAuthorAddress: on garbage anything', () => {
     fc.assert(
         fc.property(
-            fc.anything(),
+            fc.anything(),//{ maxDepth: 0 }),
             (badAddress) => {
                 let err = ValidatorEs4.parseAuthorAddress(badAddress as any);
                 expect(err instanceof ValidationError).toBeTruthy();
             }
-        )
+        ), {
+            numRuns: 50000,
+        }
     );
 });
 
