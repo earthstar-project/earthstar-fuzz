@@ -1,9 +1,9 @@
 import * as fc from 'fast-check';
 import {
     AuthorKeypair,
+    ValidationError,
     decodeBase32ToBuffer,
     sign,
-    ValidationError,
     verify,
 } from 'earthstar';
 
@@ -40,7 +40,7 @@ test('sign(): good keypair, any unicode msg', () => {
     );
 });
 
-test('sign(): bad keypair missing some properties, any unicode msg', () => {
+test('sign: bad keypair missing some properties, any unicode msg', () => {
     fc.assert(
         fc.property(
             fc.record({
@@ -58,10 +58,7 @@ test('sign(): bad keypair missing some properties, any unicode msg', () => {
             }
         ), {
             examples: [
-                // TypeError: The first argument must be of type string or an
-                // instance of Buffer, ArrayBuffer, or Array or an Array-like Object. Received undefined
-                // ...probably happens in decodeAuthorKeypair.
-                [ {}, 'hello' ],  // throws TypeError: The first argument must be of type string or an instance of Buffer, ArrayBuffer, or Array or an Array-like Object. Received undefined
+                [ {}, 'hello' ],
             ],
         }
     );

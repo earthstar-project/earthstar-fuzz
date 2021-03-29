@@ -1,8 +1,8 @@
 import * as fc from 'fast-check';
 import {
     AuthorKeypair,
-    checkAuthorKeypairIsValid,
     ValidationError,
+    checkAuthorKeypairIsValid,
 } from 'earthstar';
 
 jest.setTimeout(12000)

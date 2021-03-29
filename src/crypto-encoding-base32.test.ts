@@ -2,7 +2,7 @@ import * as fc from 'fast-check';
 import {
     b32chars,
     decodeBase32ToBuffer,
-    encodeBufferToBase32
+    encodeBufferToBase32,
 } from 'earthstar';
 
 jest.setTimeout(12000)
