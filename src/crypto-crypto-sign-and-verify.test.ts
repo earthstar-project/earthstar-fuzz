@@ -40,6 +40,33 @@ test('sign(): good keypair, any unicode msg', () => {
     );
 });
 
+test('sign(): bad keypair missing some properties, any unicode msg', () => {
+    fc.assert(
+        fc.property(
+            fc.record({
+                address: fc.fullUnicodeString(),
+                secret: fc.fullUnicodeString(),
+            }, { requiredKeys: [] }),
+            fc.fullUnicodeString(),
+            (badKeypair, msg) => {
+                let b32string = sign(badKeypair as any, msg);
+                if (b32string instanceof ValidationError) {
+                    // good
+                } else {
+                    throw new Error('expected a ValidationError');
+                }
+            }
+        ), {
+            examples: [
+                // TypeError: The first argument must be of type string or an
+                // instance of Buffer, ArrayBuffer, or Array or an Array-like Object. Received undefined
+                // ...probably happens in decodeAuthorKeypair.
+                [ {}, 'hello' ],  // throws TypeError: The first argument must be of type string or an instance of Buffer, ArrayBuffer, or Array or an Array-like Object. Received undefined
+            ],
+        }
+    );
+});
+
 test('verify: should always return false on garbage inputs (msg as string)', () => {
     fc.assert(
         fc.property(
