@@ -38,7 +38,7 @@ test('decodeAuthorKeypair: on malformed keypair', () => {
             }
         ), {
             examples: [
-                // this crash is coming from ValidatorEs4.parseAuthorAddress
+                // TODO: test ValidatorEs4.parseAuthorAddress which is the source of the crash
                 [{}],
             ],
         }
