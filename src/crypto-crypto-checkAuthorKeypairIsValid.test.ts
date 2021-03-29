@@ -1,7 +1,8 @@
 import * as fc from 'fast-check';
 import {
     AuthorKeypair,
-    checkAuthorKeypairIsValid, ValidationError,
+    checkAuthorKeypairIsValid,
+    ValidationError,
 } from 'earthstar';
 
 jest.setTimeout(12000)
@@ -12,7 +13,7 @@ fc.configureGlobal({
     markInterruptAsFailure: true,
 });
 
-test('checkAuthorKeypairIsValid with garbage object input - should always return ValidationError', () => {
+test('checkAuthorKeypairIsValid with garbage dictionary - should always return ValidationError', () => {
     fc.assert(
         fc.property(
             fc.dictionary(fc.string(), fc.string()),
@@ -24,7 +25,7 @@ test('checkAuthorKeypairIsValid with garbage object input - should always return
     );
 });
 
-test('checkAuthorKeypairIsValid with garbage json input - should always return ValidationError', () => {
+test('checkAuthorKeypairIsValid with garbage json - should always return ValidationError', () => {
     fc.assert(
         fc.property(
             fc.unicodeJsonObject(),
@@ -41,7 +42,7 @@ let goodKeypair: AuthorKeypair = {
     secret: "bwgwycyh4gytyw4p2cp55t53wqhbxb7kqnj4assaazroviffuqn7a"
 };
 
-test('checkAuthorKeypairIsValid with garbage unicode input - should always return ValidationError', () => {
+test('checkAuthorKeypairIsValid with garbage records - should always return ValidationError', () => {
     fc.assert(
         fc.property(
             fc.record({
