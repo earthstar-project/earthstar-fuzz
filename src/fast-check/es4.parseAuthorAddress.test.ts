@@ -30,7 +30,7 @@ test('parseAuthorAddress: on garbage anything', () => {
                 expect(err instanceof ValidationError).toBeTruthy();
             }
         ), {
-            numRuns: 50000,
+            numRuns: 500,
         }
     );
 });

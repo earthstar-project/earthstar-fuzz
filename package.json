@@ -13,11 +13,14 @@
   "scripts": {
     "clean": "rm -rf build/* .nyc_output coverage",
     "build": "tsc",
-    "test": "jest --verbose"
+    "test": "jest --verbose src/*/*",
+    "test-fast-check": "jest --verbose src/fast-check/*",
+    "test-mutate": "jest --verbose src/mutate/*"
   },
   "dependencies": {
     "earthstar": "^6.6.0",
-    "fast-check": "^2.14.0"
+    "fast-check": "^2.14.0",
+    "fast-equals": "^2.0.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
