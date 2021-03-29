@@ -13,7 +13,7 @@ fc.configureGlobal({
     markInterruptAsFailure: true,
 });
 
-test('base32 encoding/decoding starting from a buffer', () => {
+test('base32 encoding/decoding: starting from a buffer', () => {
     fc.assert(
         fc.property(
             // https://github.com/dubzzz/fast-check/blob/main/documentation/Arbitraries.md
@@ -43,7 +43,7 @@ test('base32 encoding/decoding starting from a buffer', () => {
     );
 });
 
-test('base32 encoding/decoding starting from a string', () => {
+test('base32 encoding/decoding: starting from a string', () => {
     fc.assert(
         fc.property(
             // https://github.com/dubzzz/fast-check/blob/main/documentation/Arbitraries.md
@@ -54,12 +54,11 @@ test('base32 encoding/decoding starting from a string', () => {
                     let buffer = decodeBase32ToBuffer(str);
                     let str2 = encodeBufferToBase32(buffer);
                     let buffer2 = decodeBase32ToBuffer(str2);
-                    //console.log(str, buffer);
                     expect(str).toStrictEqual(str2);
                     expect(buffer).toStrictEqual(buffer2);
                 } catch (err) {
                     if (err instanceof SyntaxError) {
-                        // ok
+                        // ok, not all sequences of b32 characters are valid b32 encodings.
                         //console.log(str, 'could not be decoded, which is ok');
                     } else {
                         console.log(str, 'threw an unexpected error');
@@ -67,7 +66,6 @@ test('base32 encoding/decoding starting from a string', () => {
                     }
                 }
             }
-        ), {
-        }
+        )
     );
 });

@@ -13,7 +13,7 @@ fc.configureGlobal({
     markInterruptAsFailure: true,
 });
 
-test('checkAuthorKeypairIsValid with garbage dictionary - should always return ValidationError', () => {
+test('checkAuthorKeypairIsValid: with garbage dictionary should return ValidationError', () => {
     fc.assert(
         fc.property(
             fc.dictionary(fc.string(), fc.string()),
@@ -25,7 +25,7 @@ test('checkAuthorKeypairIsValid with garbage dictionary - should always return V
     );
 });
 
-test('checkAuthorKeypairIsValid with garbage json - should always return ValidationError', () => {
+test('checkAuthorKeypairIsValid: with garbage json should return ValidationError', () => {
     fc.assert(
         fc.property(
             fc.unicodeJsonObject(),
@@ -42,7 +42,7 @@ let goodKeypair: AuthorKeypair = {
     secret: "bwgwycyh4gytyw4p2cp55t53wqhbxb7kqnj4assaazroviffuqn7a"
 };
 
-test('checkAuthorKeypairIsValid with garbage records - should always return ValidationError', () => {
+test('checkAuthorKeypairIsValid: with garbage records should return ValidationError', () => {
     fc.assert(
         fc.property(
             fc.record({

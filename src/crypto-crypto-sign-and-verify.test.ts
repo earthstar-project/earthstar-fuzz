@@ -1,5 +1,8 @@
 import * as fc from 'fast-check';
 import {
+    AuthorKeypair,
+    decodeBase32ToBuffer,
+    sign,
     ValidationError,
     verify,
 } from 'earthstar';
@@ -12,7 +15,32 @@ fc.configureGlobal({
     markInterruptAsFailure: true,
 });
 
-test('verify should always return false on garbage inputs (msg as string)', () => {
+let goodKeypair: AuthorKeypair = {
+    address: "@suzy.b724w6da6euw2ip7szpxopq2uodagdyswovh4pqd6ptnanz2u362a",
+    secret: "bwgwycyh4gytyw4p2cp55t53wqhbxb7kqnj4assaazroviffuqn7a"
+};
+
+test('sign(): good keypair, any unicode msg', () => {
+    fc.assert(
+        fc.property(
+            fc.fullUnicodeString(),
+            (msg) => {
+                let b32string = sign(goodKeypair, msg);
+                if (b32string instanceof ValidationError) {
+                    throw b32string;
+                }
+                expect(typeof b32string).toBe('string');
+                expect(b32string.length).toStrictEqual(104);
+
+                // make sure the b32 is valid
+                let buffer = decodeBase32ToBuffer(b32string as string);
+                expect(buffer.length).toStrictEqual(64);
+            }
+        )
+    );
+});
+
+test('verify: should always return false on garbage inputs (msg as string)', () => {
     fc.assert(
         fc.property(
             fc.fullUnicodeString(),
@@ -30,7 +58,7 @@ test('verify should always return false on garbage inputs (msg as string)', () =
     );
 });
 
-test('verify should always return false on garbage inputs (msg as Buffer)', () => {
+test('verify: should always return false on garbage inputs (msg as Buffer)', () => {
     fc.assert(
         fc.property(
             fc.fullUnicodeString(),
