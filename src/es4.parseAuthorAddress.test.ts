@@ -37,26 +37,10 @@ test('parseAuthorAddress: on garbage anything', () => {
     );
 });
 
-test('parseAuthorAddress: on garbage unicode', () => {
+test('parseAuthorAddress: on garbage unicode or ascii', () => {
     fc.assert(
         fc.property(
-            fc.fullUnicodeString(),
-            (badAddress) => {
-                let err = ValidatorEs4.parseAuthorAddress(badAddress as any);
-                if (err instanceof ValidationError) {
-                    // good
-                } else {
-                    throw new Error('should have thrown a ValidationError');
-                }
-            }
-        )
-    );
-});
-
-test('parseAuthorAddress: on garbage ascii', () => {
-    fc.assert(
-        fc.property(
-            fc.asciiString(),
+            fc.oneof(fc.fullUnicodeString(), fc.asciiString()),
             (badAddress) => {
                 let err = ValidatorEs4.parseAuthorAddress(badAddress as any);
                 if (err instanceof ValidationError) {

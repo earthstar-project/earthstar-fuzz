@@ -13,22 +13,13 @@ fc.configureGlobal({
     markInterruptAsFailure: true,
 });
 
-test('checkAuthorKeypairIsValid: with garbage dictionary should return ValidationError', () => {
+test('checkAuthorKeypairIsValid: with garbage object should return ValidationError', () => {
     fc.assert(
         fc.property(
-            fc.dictionary(fc.string(), fc.string()),
-            (obj) => {
-                let err = checkAuthorKeypairIsValid(obj as any);
-                expect(err instanceof ValidationError).toBeTruthy();
-            }
-        )
-    );
-});
-
-test('checkAuthorKeypairIsValid: with garbage json should return ValidationError', () => {
-    fc.assert(
-        fc.property(
-            fc.unicodeJsonObject(),
+            fc.oneof(
+                fc.dictionary(fc.string(), fc.string()),
+                fc.unicodeJsonObject(),
+            ),
             (obj) => {
                 let err = checkAuthorKeypairIsValid(obj as any);
                 expect(err instanceof ValidationError).toBeTruthy();

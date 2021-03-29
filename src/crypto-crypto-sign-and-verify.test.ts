@@ -64,38 +64,28 @@ test('sign: bad keypair missing some properties, any unicode msg', () => {
     );
 });
 
-test('verify: should always return false on garbage inputs (msg as string)', () => {
+test('verify: should always return false on garbage inputs (msg as string or buffer)', () => {
     fc.assert(
         fc.property(
             fc.fullUnicodeString(),
             fc.fullUnicodeString(),
-            fc.fullUnicodeString(),
-            (address, sig, msg) => {
-                let isValid = verify(address, sig, msg);
+            fc.oneof(
+                fc.fullUnicodeString(),
+                fc.uint8Array({minLength: 0, maxLength: 20}),
+            ),
+            (address, sig, msgStrOrBuf: any) => {
+                if (typeof msgStrOrBuf !== 'string') {
+                    // if it's a Uint8Array, convert it to a Buffer
+                    // if it's a string, leave it alone
+                    msgStrOrBuf = Buffer.from(msgStrOrBuf);
+                }
+                let isValid = verify(address, sig, msgStrOrBuf);
                 expect(isValid).toStrictEqual(false);
             }
         ), {
             examples: [
                 ["@suzy.b724w6da6euw2ip7szpxopq2uodagdyswovh4pqd6ptnanz2u362a", "xxxxx", "yyyyy"],
-            ],
-        }
-    );
-});
-
-test('verify: should always return false on garbage inputs (msg as Buffer)', () => {
-    fc.assert(
-        fc.property(
-            fc.fullUnicodeString(),
-            fc.fullUnicodeString(),
-            fc.uint8Array({minLength: 0, maxLength: 20}),
-            (address, sig, msgUint) => {
-                let msgBuffer = Buffer.from(msgUint);
-                let isValid = verify(address, sig, msgBuffer);
-                expect(isValid).toStrictEqual(false);
-            }
-        ), {
-            examples: [
-                ["@suzy.b724w6da6euw2ip7szpxopq2uodagdyswovh4pqd6ptnanz2u362a", "xxxxx", Buffer.from([0, 1, 2])],
+                ["@suzy.b724w6da6euw2ip7szpxopq2uodagdyswovh4pqd6ptnanz2u362a", "xxxxx", Buffer.from([1,2,3])],
             ],
         }
     );
