@@ -13,7 +13,7 @@
   "scripts": {
     "clean": "rm -rf build/* .nyc_output coverage",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest --verbose"
   },
   "dependencies": {
     "earthstar": "^6.6.0",
