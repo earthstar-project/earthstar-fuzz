@@ -27,11 +27,7 @@ test('parseAuthorAddress: on garbage anything', () => {
             fc.anything(),
             (badAddress) => {
                 let err = ValidatorEs4.parseAuthorAddress(badAddress as any);
-                if (err instanceof ValidationError) {
-                    // good
-                } else {
-                    throw new Error('should have thrown a ValidationError');
-                }
+                expect(err instanceof ValidationError).toBeTruthy();
             }
         )
     );
@@ -43,12 +39,25 @@ test('parseAuthorAddress: on garbage unicode or ascii', () => {
             fc.oneof(fc.fullUnicodeString(), fc.asciiString()),
             (badAddress) => {
                 let err = ValidatorEs4.parseAuthorAddress(badAddress as any);
-                if (err instanceof ValidationError) {
-                    // good
-                } else {
-                    throw new Error('should have thrown a ValidationError');
-                }
+                expect(err instanceof ValidationError).toBeTruthy();
             }
         )
+    );
+});
+
+test('parseAuthorAddress: on ablated real address', () => {
+    fc.assert(
+        fc.property(
+            // ordered subset of characters from a known good example
+            // (e.g. randomly delete 1 or more characters)
+            fc.subarray(goodKeypair.address.split(''), { maxLength: goodKeypair.address.length-1 })
+                .map(arr => arr.join('')),
+            (badAddress) => {
+                let err = ValidatorEs4.parseAuthorAddress(badAddress as any);
+                expect(err instanceof ValidationError).toBeTruthy();
+            }
+        ), {
+            numRuns: 1000,
+        }
     );
 });

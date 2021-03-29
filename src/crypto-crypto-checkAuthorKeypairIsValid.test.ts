@@ -33,6 +33,43 @@ let goodKeypair: AuthorKeypair = {
     secret: "bwgwycyh4gytyw4p2cp55t53wqhbxb7kqnj4assaazroviffuqn7a"
 };
 
+test('checkAuthorKeypairIsValid: with ablated address should return ValidationError', () => {
+    fc.assert(
+        fc.property(
+            fc.record({
+                address: fc.subarray(goodKeypair.address.split(''), { maxLength: goodKeypair.address.length-1 })
+                    .map(arr => arr.join('')),
+                secret: fc.constant(goodKeypair.secret),
+            }),
+            (obj) => {
+                let err = checkAuthorKeypairIsValid(obj as any);
+                expect(err instanceof ValidationError).toBeTruthy();
+            }
+        ), {
+            numRuns: 1000,
+        }
+    );
+});
+
+test('checkAuthorKeypairIsValid: with ablated secret should return ValidationError', () => {
+    fc.assert(
+        fc.property(
+            fc.record({
+                address: fc.constant(goodKeypair.address),
+                secret: fc.subarray(goodKeypair.secret.split(''), { maxLength: goodKeypair.secret.length-1 })
+                    .map(arr => arr.join('')),
+            }),
+            (obj) => {
+                let err = checkAuthorKeypairIsValid(obj as any);
+                expect(err instanceof ValidationError).toBeTruthy();
+            }
+        ), {
+            numRuns: 1000,
+        }
+    );
+});
+
+
 test('checkAuthorKeypairIsValid: with garbage records should return ValidationError', () => {
     fc.assert(
         fc.property(

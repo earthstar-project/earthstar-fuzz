@@ -30,11 +30,7 @@ test('decodeAuthorKeypair: on malformed keypair', () => {
             }, { requiredKeys: [] }),
             (badKeypair) => {
                 let err = decodeAuthorKeypair(badKeypair as any);
-                if (err instanceof ValidationError) {
-                    // good
-                } else {
-                    throw new Error('should have thrown a ValidationError');
-                }
+                expect(err instanceof ValidationError).toBeTruthy();
             }
         ), {
             examples: [

@@ -5,6 +5,7 @@ import {
     decodeBase32ToBuffer,
     sign,
     verify,
+    ValidatorEs4,
 } from 'earthstar';
 
 jest.setTimeout(12000)
@@ -20,7 +21,7 @@ let goodKeypair: AuthorKeypair = {
     secret: "bwgwycyh4gytyw4p2cp55t53wqhbxb7kqnj4assaazroviffuqn7a"
 };
 
-test('sign(): good keypair, any unicode msg', () => {
+test('sign: good keypair, any unicode msg, should succeed', () => {
     fc.assert(
         fc.property(
             fc.fullUnicodeString(),
@@ -50,11 +51,7 @@ test('sign: bad keypair missing some properties, any unicode msg', () => {
             fc.fullUnicodeString(),
             (badKeypair, msg) => {
                 let b32string = sign(badKeypair as any, msg);
-                if (b32string instanceof ValidationError) {
-                    // good
-                } else {
-                    throw new Error('expected a ValidationError');
-                }
+                expect(b32string instanceof ValidationError).toBeTruthy();
             }
         ), {
             examples: [
