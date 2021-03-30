@@ -125,14 +125,20 @@ export let anyString = (): any =>
 
 //================================================================================
 
-export let mutateObj = (obj: Record<string, any>): Record<string, any> => {
+interface MutateOpts {
+    removeKey?: boolean,
+    addKey?: boolean,
+    replaceKey?: boolean,
+    mutateKey?: boolean,
+}
+export let mutateObj = (obj: Record<string, any>, opts: MutateOpts = {}): Record<string, any> => {
     while (true) {
         let obj2 = {...obj};
         let which = randInt(1, 3);
-        if      (which === 1) { obj2 = removeKeyFromObj(obj2); }
-        else if (which === 2) { obj2 = addRandomKeyToObj(obj2, anyString, anything); }
-        else if (which === 3) { obj2 = replaceObjKey(obj2, anything); }
-        else if (which === 4) { obj2 = mutateObjKey(obj2); }
+        if      (which === 1 && opts.removeKey  !== false) { obj2 = removeKeyFromObj(obj2); }
+        else if (which === 2 && opts.addKey     !== false) { obj2 = addRandomKeyToObj(obj2, anyString, anything); }
+        else if (which === 3 && opts.replaceKey !== false) { obj2 = replaceObjKey(obj2, anything); }
+        else if (which === 4 && opts.mutateKey  !== false) { obj2 = mutateObjKey(obj2); }
         if (!deepEqual(obj, obj2)) { return obj2; }
     }
 }
