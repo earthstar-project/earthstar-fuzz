@@ -33,7 +33,7 @@ test('parseAuthorAddress: on mutated good address', () => {
         if (err instanceof ValidationError) {
             // good
         } else {
-            console.log(badAddress, err);
+            console.log('epaa-831', badAddress, err);
             expect(err instanceof ValidationError).toBeTruthy();
         }
     }
@@ -46,7 +46,7 @@ test('parseAuthorAddress: on anything', () => {
         if (err instanceof ValidationError) {
             // good
         } else {
-            console.log(JSON.stringify(badAddress), err);
+            console.log('epaa-01937', JSON.stringify(badAddress), err);
             expect(err instanceof ValidationError).toBeTruthy();
         }
     }
